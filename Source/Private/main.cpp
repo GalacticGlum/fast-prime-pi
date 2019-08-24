@@ -17,9 +17,26 @@
    
 #include <iostream>
 #include <fstream>
+#include <string>
 #include <primecount.hpp>
 
-int main(int argc, char** argv)
+int main(const int argc, char** argv)
 {
+    if (argc <= 2)
+    {
+        std::cout << "Missing required positional argument.\n";
+        return -1;
+    }
 
+    // Initialize output file handle
+    const int64_t x = std::strtoll(argv[1], argv + argc, 10);
+    const std::string outputFilepath = "ppiccg_" + std::to_string(x) + ".out.csv";
+    const std::ofstream outputFile(outputFilepath);
+    if (!outputFile.is_open())
+    {
+        std::cout << "Could not create output file (\"" << outputFilepath << "\").\n";
+        return -1;
+    }
+
+    return 0;
 }
