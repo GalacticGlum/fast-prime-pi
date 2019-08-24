@@ -9,6 +9,7 @@ cmake_minimum_required(VERSION 3.6)
 # PPiCCG = Prime Pi convergence graph generator...
 project(PPiCCG)
 
+SET(PPiCCG_CMAKE_DIR "${PPiCCG_SOURCE_DIR}/CMake")
 SET(PPiCCG_DEPEND_DIR "${PPiCCG_SOURCE_DIR}/Dependencies")
 
 # add the -c and -Wall flags
@@ -59,9 +60,18 @@ target_compile_options(PPiCCG PUBLIC
 	"$<$<CONFIG:Debug>:-W4>"
 )
 
+# Primecount library
+INCLUDE(${PPiCCG_CMAKE_DIR}/FindPrimecount.cmake)
+
 # Define the include DIRs
 include_directories(
-	${PPiCCG_SOURCE_DIR}/Source/Public
+    ${PPiCCG_SOURCE_DIR}/Source/Public
+    ${Primecount_INCLUDE_DIRS}
+)
+
+# Define the link libraries
+target_link_libraries( PPiCCG
+	${Primecount_LIBRARIES}
 )
 
 # Copy binaries to output directory...
