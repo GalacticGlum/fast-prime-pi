@@ -8,6 +8,11 @@
  *              of the prime counting (pi) function to its approximation.
  *              This graph helps visualize the limit of the quotient of the
  *              two functions (i.e. how the approximation converges eventually).
+ *              
+ *              The output of this program is a CSV file with two rows: the value of n
+ *              and the ratio of the value of the prime counting (pi) function to its
+ *              approximation at n (i.e. y = pi(n) / ~pi(n) where ~pi(n) denotes a
+ *              function that approximates pi(n)).
  */
    
 #include <iostream>
