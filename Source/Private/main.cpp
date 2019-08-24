@@ -18,11 +18,12 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cmath>
 #include <primecount.hpp>
 
 int main(const int argc, char** argv)
 {
-    if (argc <= 2)
+    if (argc < 2)
     {
         std::cout << "Missing required positional argument.\n";
         return -1;
@@ -31,11 +32,20 @@ int main(const int argc, char** argv)
     // Initialize output file handle
     const int64_t x = std::strtoll(argv[1], argv + argc, 10);
     const std::string outputFilepath = "ppiccg_" + std::to_string(x) + ".out.csv";
-    const std::ofstream outputFile(outputFilepath);
+    
+    std::ofstream outputFile(outputFilepath);
     if (!outputFile.is_open())
     {
         std::cout << "Could not create output file (\"" << outputFilepath << "\").\n";
         return -1;
+    }
+
+    // Generate graph data on the domain [1, x].
+    for (int n = 1; n <= x; ++n)
+    {
+        const int64_t pi = primecount::pi(n);
+        const double ratio = pi * std::log(n) / n;
+        outputFile << std::to_string(n) << "," << std::to_string(ratio) << "\n";
     }
 
     return 0;
