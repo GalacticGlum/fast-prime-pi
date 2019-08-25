@@ -12,7 +12,8 @@ from pathlib import Path
 
 parser = argparse.ArgumentParser(description='Constructs a graph via matplotlib from a CSV file.')
 parser.add_argument('input', type=str, help='The filepath to the CSV file containing the graph data.')
-parser.add_argument('--label', type=str, help='The label of the graph.')
+parser.add_argument('--title', type=str, help='The title of the graph.')
+parser.add_argument('--label', type=str, help='The label of the plotted curve.')
 parser.add_argument('--colour', type=str, help='The colour of the graph.', default='blue')
 parser.add_argument('--xlabel', type=str, help='The label on the x-axis.', default='x')
 parser.add_argument('--ylabel', type=str, help='The label on the y-axis.', default='y')
@@ -33,7 +34,10 @@ if input_filepath.exists() and input_filepath.is_file():
         plt.axhline(y=args.axhline, color=args.axhline_colour, linestyle=args.axhline_style)
     
     x, y = np.loadtxt(input_filepath, delimiter=',', unpack=True)
-    plt.plot(x, y, label=args.label, color=args.colour)   
+    plt.plot(x, y, label=args.label, color=args.colour)
+    if args.title is not None:
+        plt.title(args.title)
+    
     plt.xlabel(args.xlabel)
     plt.ylabel(args.ylabel)
     plt.xscale(args.xscale)
