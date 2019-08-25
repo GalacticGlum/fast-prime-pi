@@ -19,6 +19,7 @@
 #include <fstream>
 #include <string>
 #include <cmath>
+#include <chrono>
 #include <primecount.hpp>
 
 int main(const int argc, char** argv)
@@ -30,7 +31,7 @@ int main(const int argc, char** argv)
     }
 
     // Initialize output file handle
-    const int64_t x = std::strtoll(argv[1], argv + argc, 10);
+    const uint64_t x = std::strtoull(argv[1], argv + argc, 10);
     const std::string outputFilepath = "ppiccg_" + std::to_string(x) + ".out.csv";
     
     std::ofstream outputFile(outputFilepath);
@@ -40,13 +41,32 @@ int main(const int argc, char** argv)
         return -1;
     }
 
+    // Set the buffer size to 64 kB
+    const unsigned int bufferSize = 65536;
+    char buffer[bufferSize];
+    outputFile.rdbuf()->pubsetbuf(buffer, bufferSize);
+
+    const std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
+
     // Generate graph data on the domain [1, x].
-    for (int n = 1; n <= x; ++n)
+    uint64_t sampleInterval = 1;
+    uint64_t nextIntervalMark = 100;
+    for (uint64_t n = 1; n <= x; n += sampleInterval)
     {
+        if (n > nextIntervalMark)
+        {
+            sampleInterval *=  10;
+            nextIntervalMark *= 10;
+        }
+
         const int64_t pi = primecount::pi(n);
         const double ratio = pi * std::log(n) / n;
         outputFile << std::to_string(n) << "," << std::to_string(ratio) << "\n";
     }
+
+    const std::chrono::steady_clock::time_point endTime = std::chrono::steady_clock::now();
+    const double elapsed = std::lround(std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime).count() * 100 + 0.5) / 100.0;
+    std::cout << "Operation took " << elapsed << " seconds.\n";
 
     return 0;
 }

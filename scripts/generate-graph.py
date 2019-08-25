@@ -12,20 +12,18 @@ from pathlib import Path
 
 parser = argparse.ArgumentParser(description='Constructs a graph via matplotlib from a CSV file.')
 parser.add_argument('input', type=str, help='The filepath to the CSV file containing the graph data.')
+parser.add_argument('--xscale', type=str, help='The x-axis scale to apply.', default='linear')
+parser.add_argument('--yscale', type=str, help='The y-axis scale to apply.', default='linear')
 args = parser.parse_args()
 
 input_filepath = Path(args.input)
 if input_filepath.exists() and input_filepath.is_file():
-    # with open(input_filepath) as input_csv:
-    #     reader = csv.reader(input_csv)
-        
-    #     plt.ion()
-    #     for row in reader:
-
     x, y = np.loadtxt(input_filepath, delimiter=',', unpack=True)
     plt.plot(x, y, label='$\\frac{\pi(x)}{x/\ln(x)}$', color='blue')
     plt.xlabel('x')
     plt.ylabel('y')
+    plt.xscale(args.xscale)
+    plt.yscale(args.yscale)
     plt.legend(loc='upper right')
     plt.show()
 else:
