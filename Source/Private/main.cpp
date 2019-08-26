@@ -21,6 +21,7 @@
 #include <cmath>
 #include <chrono>
 #include <primecount.hpp>
+#include <algorithm>
 
 int main(const int argc, char** argv)
 {
@@ -53,9 +54,12 @@ int main(const int argc, char** argv)
     uint64_t nextIntervalMark = 100;
     for (uint64_t n = 1; n <= x; n += sampleInterval)
     {
+        // The density of the sample points decreases as x gets larger
+        // for performance reasons. This is okay since precision becomes
+        // less necessary for larger values of x.
         if (n > nextIntervalMark)
         {
-            sampleInterval *=  10;
+            sampleInterval *= std::pow(10, std::max(1.0, std::log10(n) - 8));
             nextIntervalMark *= 10;
         }
 
