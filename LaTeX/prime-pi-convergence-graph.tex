@@ -18,15 +18,18 @@ log basis x={10},
 axis lines=left,
 xlabel={Number $(x)$},
 ylabel={Ratio $(y)$},
-xmin=0.199626521975509, xmax=1e19,
+xmin=1, xmax=1e19,
 ymin=0.8,ymax=1.26,
 axis line style={-},
 minor y tick num=5,
 legend pos=north east,
-legend style={inner sep=4pt}]
+legend style={inner sep=4pt},
+height=5cm,
+width=8cm,
+scale only axis=true]
 \addplot[blue]
 table {%
-0.199626521975509 1
+1 1
 1e19 1
 };
 \addplot[blue]
