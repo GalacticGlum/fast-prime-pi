@@ -492,5 +492,5 @@ Build/
 Dependencies/
 
 # LaTeX
-.aux
-.log
+*.aux
+*.log
