@@ -490,3 +490,7 @@ dmypy.json
 # CUSTOM
 Build/
 Dependencies/
+
+# LaTeX
+.aux
+.log
